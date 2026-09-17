@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}FitZone Gym | Train Stronger{% endblock %}
+
+{% block content %}
+
+<section id="home" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+        <div class="row min-vh-100 align-items-center">
+            <div class="col-lg-7">
+                <span class="eyebrow">PUDUKKOTTAI'S FITNESS COMMUNITY</span>
+                <h1>BUILD YOUR<br><span>STRONGEST</span> SELF.</h1>
+                <p class="lead text-light-emphasis">
+                    Premium gym training, personal coaching and a community that keeps
+                    you moving toward your goals.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a href="#plans" class="btn btn-brand btn-lg">View Memberships</a>
+                    <a href="#contact" class="btn btn-outline-light btn-lg">Start Training</a>
+                </div>
+
+                <div class="hero-stats row g-3 mt-5">
+                    <div class="col-4">
+                        <strong>500+</strong>
+                        <small>Members</small>
+                    </div>
+                    <div class="col-4">
+                        <strong>8+</strong>
+                        <small>Expert Trainers</small>
+                    </div>
+                    <div class="col-4">
+                        <strong>7 Days</strong>
+                        <small>Open / Week</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="section-padding">
+    <div class="container">
+        <div class="section-heading">
+            <span>ABOUT US</span>
+            <h2>More than a gym.<br>A place to <strong>transform.</strong></h2>
+        </div>
+
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="about-image">
+                    <img src="{% static 'images/gym-about.jpg' %}" alt="Gym training">
+                    <div class="experience-card">
+                        <strong>10+</strong>
+                        <span>Years of<br>Fitness Experience</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <p class="text-secondary fs-5">
+                    FitZone is built for people who want measurable progress, better
+                    health and a stronger mindset.
+                </p>
+                <p class="text-secondary">
+                    Whether you're starting your fitness journey, preparing for a
+                    competition or simply looking for a healthier lifestyle, our
+                    trainers and programs are designed around your goals.
+                </p>
+
+                <div class="row g-3 mt-3">
+                    <div class="col-sm-6">
+                        <div class="mini-card">
+                            <i class="bi bi-person-check"></i>
+                            <h5>Expert Coaching</h5>
+                            <p>Guidance from experienced trainers.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mini-card">
+                            <i class="bi bi-heart-pulse"></i>
+                            <h5>Real Results</h5>
+                            <p>Programs focused on sustainable progress.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="section-padding section-dark">
+    <div class="container">
+        <div class="section-heading light">
+            <span>WHAT WE OFFER</span>
+            <h2>Training designed<br>around <strong>you.</strong></h2>
+        </div>
+
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="service-card h-100">
+                    <i class="bi {{ service.icon }}"></i>
+                    <h4>{{ service.name }}</h4>
+                    <p>{{ service.description }}</p>
+                    <a href="#contact">Learn more <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-secondary">Add services from the Django admin.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="plans" class="section-padding">
+    <div class="container">
+        <div class="section-heading text-center">
+            <span>MEMBERSHIPS</span>
+            <h2>Choose your <strong>plan.</strong></h2>
+            <p class="text-secondary">Simple plans for different training goals.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for plan in plans %}
+            <div class="col-md-6 col-lg-4">
+                <div class="plan-card h-100 {% if plan.featured %}featured{% endif %}">
+                    {% if plan.featured %}
+                    <span class="popular-badge">POPULAR</span>
+                    {% endif %}
+                    <h4>{{ plan.name }}</h4>
+                    <p class="text-secondary">{{ plan.duration }}</p>
+                    <div class="price">₹{{ plan.price|floatformat:0 }}</div>
+
+                    <ul>
+                        {% for feature in plan.feature_list %}
+                        <li><i class="bi bi-check-circle-fill"></i>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <a href="#contact" class="btn {% if plan.featured %}btn-brand{% else %}btn-dark-custom{% endif %} w-100">
+                        Choose Plan
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-secondary">Add membership plans from the admin panel.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="trainers" class="section-padding section-light">
+    <div class="container">
+        <div class="section-heading">
+            <span>OUR TEAM</span>
+            <h2>Meet your <strong>coaches.</strong></h2>
+        </div>
+
+        <div class="row g-4">
+            {% for trainer in trainers %}
+            <div class="col-sm-6 col-lg-3">
+                <div class="trainer-card">
+                    {% if trainer.image %}
+                        <img src="{{ trainer.image.url }}" alt="{{ trainer.name }}">
+                    {% else %}
+                        <div class="trainer-placeholder"><i class="bi bi-person"></i></div>
+                    {% endif %}
+                    <div class="p-3">
+                        <h5>{{ trainer.name }}</h5>
+                        <p>{{ trainer.role }}</p>
+                        <small>{{ trainer.bio|truncatewords:18 }}</small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-secondary">Add trainers from the admin panel.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="cta-box">
+            <div>
+                <span>READY TO START?</span>
+                <h2>Your next level<br>starts today.</h2>
+            </div>
+            <a href="#contact" class="btn btn-brand btn-lg">Join FitZone</a>
+        </div>
+    </div>
+</section>
+
+<section id="gallery" class="section-padding">
+    <div class="container">
+        <div class="section-heading text-center">
+            <span>THE GYM</span>
+            <h2>Inside <strong>FitZone.</strong></h2>
+        </div>
+
+        <div class="row g-3">
+            {% for item in gallery %}
+            <div class="col-6 col-lg-4">
+                <div class="gallery-item">
+                    <img src="{{ item.image.url }}" alt="{{ item.title|default:'FitZone Gym' }}">
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-secondary">Add gallery images from the admin panel.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-padding section-dark">
+    <div class="container">
+        <div class="section-heading light text-center">
+            <span>MEMBER STORIES</span>
+            <h2>Progress feels better<br>when you <strong>share it.</strong></h2>
+        </div>
+
+        <div class="row g-4">
+            {% for testimonial in testimonials %}
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card h-100">
+                    <div class="stars">★★★★★</div>
+                    <p>"{{ testimonial.message }}"</p>
+                    <div class="d-flex align-items-center gap-3">
+                        {% if testimonial.image %}
+                            <img class="avatar" src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}">
+                        {% else %}
+                            <div class="avatar avatar-placeholder"><i class="bi bi-person"></i></div>
+                        {% endif %}
+                        <div>
+                            <strong>{{ testimonial.name }}</strong>
+                            <small>{{ testimonial.role }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-secondary text-center">Add testimonials from the admin panel.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-5">
+                <div class="section-heading">
+                    <span>CONTACT</span>
+                    <h2>Let's start your<br><strong>transformation.</strong></h2>
+                </div>
+                <p class="text-secondary">
+                    Send us your details and our team will contact you about
+                    memberships, personal training and trial sessions.
+                </p>
+
+                <div class="contact-info mt-4">
+                    <div><i class="bi bi-telephone"></i><span>+91 98765 43210</span></div>
+                    <div><i class="bi bi-envelope"></i><span>hello@fitzonegym.com</span></div>
+                    <div><i class="bi bi-geo-alt"></i><span>Pudukkottai, Tamil Nadu</span></div>
+                </div>
+
+                <a class="btn btn-success mt-4" target="_blank"
+                   href="https://wa.me/919876543210">
+                    <i class="bi bi-whatsapp me-2"></i> WhatsApp Us
+                </a>
+            </div>
+
+            <div class="col-lg-7">
+                <form method="post" action="{% url 'contact' %}" class="contact-form">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Your name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Phone</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="Your phone number" required>
+                        </div>
+                        <div class="col-12">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Your email">
+                        </div>
+                        <div class="col-12">
+                            <label>Message</label>
+                            <textarea name="message" class="form-control" rows="5"
+                                      placeholder="Tell us what you want to achieve..." required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-brand btn-lg w-100" type="submit">
+                                Send Enquiry <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
